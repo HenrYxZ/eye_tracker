@@ -9,4 +9,8 @@ of the pupil also gave in pixels for every frame, and a new video which is the
 video watched by the eye but with a red cross indicating the pixel where the eye
 is looking.
 
+## Dependencies
+* OpenCV
+* Python 2.7
+
 @author: Hernaldo Henríquez
