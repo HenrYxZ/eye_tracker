@@ -12,7 +12,7 @@ is looking.
 
 Created on 20-6-2014
 
-@author: Hernaldo Henríquez
+@author: Hernaldo Henriquez
 '''
 
 def get_videos(source_1, source_2):
@@ -36,38 +36,47 @@ def report(log, frame_number, center, radius):
 
 def get_circle(cnt):
 	(x,y),radius = cv2.minEnclosingCircle(cnt)
-	center = (int(x),int(y))
-	radius = int(radius)
+	#center = (int(x),int(y))
+	center = (200,200)
+	#radius = int(radius)
+	radius = 30
 	return center, radius
 
-def process_by_frame:
-	log = open("log.txt", "w")
+def process_by_frame(eye_capture, looked_capture):
+	#log = open("log.txt", "w")
 	counter = 1
 	while True:
 		ret_eye, img_eye = eye_capture.read()
-		ret_looked, img_looked = looked_capture.read()
-		if not ret_eye or not ret_looked:
+		#ret_looked, img_looked = looked_capture.read()
+		#if not ret_eye or not ret_looked:
+		if not ret_eye:
 			break
-		new_eye_img = cv2.cv.cvCloneImage(img_eye)
-		pupil = segmentate(img_eye)
+		new_eye_img = img_eye.copy()
+		pupil = segmentate(new_eye_img)
 		# TODO process pupil
 		center, radius = get_circle(pupil)
 		border_color = (0, 255, 0)
 		cv2.circle(new_eye_img, center, radius, border_color, 2)
-		cv2.imshow("Eye segmentation", new_eye_img)
+		cv2.imshow("EyeSegmentation", new_eye_img)
+		counter = counter + 1
 
-	log.close()
+	#log.close()
+	eye_capture.release()
+	looked_capture.release()
 
-def main:
+def main():
 	print ('Write the path for the video of the eye')
-	eye_video_src = raw_input()
+	#eye_video_src = raw_input()
+	eye_video_src = "sujeto1/suj1_CUT.avi"
 
 	print ('Write the path for the looked video')
-	looked_video_src = raw_input()
+	#looked_video_src = raw_input()
+	looked_video_src = "sujeto1/Test1.avi"
 
-	cv2.namedWindow("Eye segmentation")
+	cv2.namedWindow("EyeSegmentation")
 	eye_capture, looked_capture = get_videos(eye_video_src, looked_video_src)
 	process_by_frame(eye_capture, looked_capture)
+	cv2.destroyAllWindows()
 
 if __name__ == '__main__':
 	main()
